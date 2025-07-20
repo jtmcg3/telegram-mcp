@@ -1,0 +1,24 @@
+services:
+  telegram-mcp:
+    build: .
+    container_name: telegram-mcp-server
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data  # Persist conversation history if needed
+      - ./logs:/app/logs  # Persist logs
+    networks:
+      - mcp-network
+    stdin_open: true  # Keep stdin open
+    tty: true  # Allocate a pseudo-TTY
+
+networks:
+  mcp-network:
+    driver: bridge
+
+volumes:
+  mcp-data:
+  mcp-logs:

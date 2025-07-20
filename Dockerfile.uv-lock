@@ -1,0 +1,46 @@
+# Alternative Dockerfile using uv.lock for better reproducibility
+FROM python:3.12-slim AS base
+
+FROM base AS builder
+
+# Copy uv binary from the official image (pin to specific version for reproducibility)
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /bin/uv
+
+# Enable bytecode compilation and use copy mode
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
+
+WORKDIR /app
+
+# If you have a uv.lock file, copy it along with pyproject.toml
+COPY pyproject.toml /app/
+# COPY uv.lock /app/  # Uncomment if you have a lock file
+
+# Install dependencies with caching
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv venv && \
+    uv pip install fastmcp>=0.1.0 python-telegram-bot>=21.0 python-dotenv>=1.0.0 requests>=2.31.0
+
+# Copy application code
+COPY . /app
+
+# Final stage
+FROM base
+
+WORKDIR /app
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the entire app from builder
+COPY --from=builder /app /app
+
+# Create non-root user
+RUN useradd -m -u 1000 mcpuser && chown -R mcpuser:mcpuser /app
+USER mcpuser
+
+# Set PATH to use virtual environment
+ENV PATH="/app/.venv/bin:$PATH"
+
+CMD ["python", "telegram_mcp_server.py"]
