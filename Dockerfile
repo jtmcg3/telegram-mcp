@@ -11,18 +11,16 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
 WORKDIR /app
 
-# Copy only dependency files first for better caching
-COPY pyproject.toml /app/
+# Copy dependency files first for better caching
+COPY pyproject.toml uv.lock README.md LICENSE /app/
 
-# Create virtual environment and install dependencies
+# Create virtual environment and install dependencies using uv.lock
 RUN uv venv && \
-    uv pip install fastmcp>=0.1.0 python-telegram-bot>=21.0 python-dotenv>=1.0.0 requests>=2.31.0
+    uv sync --frozen
 
-# Copy application code and environment file
-COPY telegram_mcp_server.py .
-COPY .env .
-COPY utils/ ./utils/
-COPY config/ ./config/
+# Copy application code
+COPY src/ /app/src/
+COPY .env* /app/
 
 # Final stage
 FROM base
@@ -46,6 +44,7 @@ USER mcpuser
 
 # Add virtual environment to PATH
 ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app/src:$PYTHONPATH"
 
 # The MCP server will communicate via stdio
-CMD ["python", "telegram_mcp_server.py"]
+CMD ["python", "-m", "telegram_mcp.server"]

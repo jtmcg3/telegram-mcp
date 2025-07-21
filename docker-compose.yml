@@ -10,6 +10,7 @@ services:
     volumes:
       - ./data:/app/data  # Persist conversation history if needed
       - ./logs:/app/logs  # Persist logs
+      - ./.env:/app/.env:ro  # Mount env file as read-only
     networks:
       - mcp-network
     stdin_open: true  # Keep stdin open

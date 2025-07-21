@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+ENV/
+
+# Testing
+*_test.py
+test_*.py
+tests/
+.coverage
+htmlcov/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Documentation
+docs/
+examples/
+*.md
+!README.md
+!LICENSE
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Logs (except we want to create the directory)
+logs/*.log
+
+# Environment files (we'll copy these specifically)
+# .env files are copied explicitly in Dockerfile
+
+# Build artifacts
+*.lock
+!uv.lock
+
+# OS
+.DS_Store
+Thumbs.db

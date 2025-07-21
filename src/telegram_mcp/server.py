@@ -9,13 +9,12 @@ from contextlib import asynccontextmanager
 import os
 from datetime import datetime
 import sys
-
-# Add project root to path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import time
+import threading
 
 # Configuration and logging
-from config import settings
-from config.logging_config import setup_logging, get_logger
+from .config import settings
+from .logging import setup_logging, get_logger
 
 # FastMCP and MCP imports
 from fastmcp import FastMCP
@@ -38,7 +37,7 @@ class TelegramMCPServer:
         self.conversation_history = []  # Store conversation context
         
         # Initialize FastMCP
-        self.mcp = FastMCP(settings.MCP_SERVER_NAME)
+        self.mcp = FastMCP(settings.MCP_SERVER_NAME or "telegram-mcp")
         self._setup_mcp_tools()
         
         # Initialize Telegram application

@@ -4,9 +4,75 @@ version = "0.1.0"
 description = "Telegram MCP server for bidirectional LLM-human communication"
 readme = "README.md"
 requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Telegram MCP Contributors"}]
+keywords = ["mcp", "telegram", "llm", "ai", "communication", "bot"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Chat",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
 dependencies = [
     "fastmcp>=0.1.0",
     "python-telegram-bot>=21.0",
     "python-dotenv>=1.0.0",
     "requests>=2.31.0",
+    "mcp>=1.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/telegram-mcp"
+Documentation = "https://github.com/yourusername/telegram-mcp#readme"
+Repository = "https://github.com/yourusername/telegram-mcp"
+Issues = "https://github.com/yourusername/telegram-mcp/issues"
+
+[project.scripts]
+telegram-mcp = "telegram_mcp.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+    "src/**/*",
+    "README.md",
+    "LICENSE",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.2.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["src"]
+python_files = ["*_test.py", "test_*.py"]
+asyncio_mode = "auto"

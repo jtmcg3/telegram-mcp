@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+"""Entry point script for running Telegram MCP server."""
+
+import sys
+from src.telegram_mcp.cli import main
+
+if __name__ == "__main__":
+    main()
