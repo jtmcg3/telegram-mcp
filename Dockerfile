@@ -20,7 +20,6 @@ RUN uv venv && \
 
 # Copy application code
 COPY src/ /app/src/
-COPY .env* /app/
 
 # Final stage
 FROM base
@@ -45,6 +44,10 @@ USER mcpuser
 # Add virtual environment to PATH
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH="/app/src:$PYTHONPATH"
+
+# Health check - verify Python can import the module
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import telegram_mcp; print('Health check passed')" || exit 1
 
 # The MCP server will communicate via stdio
 CMD ["python", "-m", "telegram_mcp.server"]
