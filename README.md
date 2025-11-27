@@ -1,3 +1,4 @@
+![Telegram MCP Logo](docs/assets/telegram-mcp.png)
 # Telegram MCP Server
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -7,6 +8,8 @@
 Enable seamless bidirectional communication between Large Language Models (LLMs) and humans through Telegram using the Model Context Protocol (MCP).
 
 ## Overview
+
+![Telegram MCP Text](docs/assets/telegram_mcp_text.jpeg)
 
 Telegram MCP Server bridges the gap between AI assistants and human users by providing a robust, secure communication channel through Telegram. This allows LLMs to:
 
